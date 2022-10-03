@@ -3,6 +3,8 @@ package com.example.todoapp.app.task;
 import java.util.List;
 import java.util.Optional;
 
+import javax.validation.Valid;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -17,7 +19,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.example.todoapp.entity.Task;
 import com.example.todoapp.service.TaskService;
 
-import jakarta.validation.Valid;
 
 @Controller
 @RequestMapping("/task")
@@ -169,12 +170,13 @@ public class TaskController {
    * @return
    */
   // 1-1 "/duplicate"に対してマッピングを行うアノテーションを記述する
+  @PostMapping("/duplicate")
   public String duplicate(TaskForm taskForm,
       // 1-2 Requestパラメータから"taskId"の名前でint idを取得するようにする
-      int id, Model model) {
+      @RequestParam("taskId") int id, Model model) {
 
     // 1-3 taskService.getTaskを用いてTaskを取得する
-    Optional<Task> taskOpt = null;
+    Optional<Task> taskOpt = this.taskService.getTask(id);
 
     // TaskFormへの詰め直し
     Optional<TaskForm> taskFormOpt = taskOpt.map(t -> makeTaskForm(t));
@@ -204,15 +206,16 @@ public class TaskController {
    * @return
    */
   // 2-4 "/selectType"に対してマッピングを行うアノテーションを記述する
+  @PostMapping("/selectType")
   public String selectType(TaskForm taskForm,
       // 2-5 Requestパラメータから"typeId"の名前でint idを取得するようにする
-      int id, Model model) {
+      @RequestParam("typeId") int id, Model model) {
 
     // 新規登録か更新かを判断する仕掛け
     taskForm.setNewTask(true);
 
     // 2-6 taskService.findByTypeを用いてTaskのリストを取得する
-    List<Task> list = null;
+    List<Task> list = this.taskService.findByType(id);
 
     model.addAttribute("list", list);
     model.addAttribute("title", "タスク一覧");

@@ -2,12 +2,14 @@ package com.example.todoapp.app.task;
 
 import java.time.LocalDateTime;
 
+import javax.validation.constraints.Digits;
+import javax.validation.constraints.Future;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 import org.springframework.format.annotation.DateTimeFormat;
 
-import jakarta.validation.constraints.Digits;
-import jakarta.validation.constraints.Future;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
 
 public class TaskForm {
   @Digits(integer = 1, fraction = 0)
@@ -20,7 +22,7 @@ public class TaskForm {
   @NotBlank(message = "内容を入力してください。")
   private String detail;
 
-  @NotBlank(message = "期限を設定してください。")
+  @NotNull(message = "期限を設定してください。")
   @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
   @Future(message = "期限が過去に設定されています。")
   private LocalDateTime deadline;

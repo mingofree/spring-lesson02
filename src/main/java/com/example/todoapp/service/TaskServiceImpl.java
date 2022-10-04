@@ -56,6 +56,6 @@ public class TaskServiceImpl implements TaskService {
   @Override
   public List<Task> findByType(int typeId) {
     // TODO Auto-generated method stub
-    return null;
+    return this.dao.findByType(typeId);
   }
 }
